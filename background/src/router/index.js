@@ -9,8 +9,10 @@ import 'iview/dist/styles/iview.css';
 //组件引入
 import goodslist from '../pages/goodslist.vue'
 import userlist from '../pages/userlist.vue'
-import addgoods from '../pages/addgoods.vue'
-import changuser from '../pages/changuser.vue'
+import goodsadd from '../pages/goodsadd.vue'
+import userdetails from '../pages/userdetails.vue'
+import useradd from '../pages/useradd.vue'
+import goodsamend from '../pages/goodsamend.vue'
 //使用
 Vue.use(VueRouter)
 Vue.use(iView);
@@ -24,11 +26,17 @@ let router = new VueRouter({
         path:'/goodslist',
         component : goodslist
     },{
-        path:'/addgoods',
-        component : addgoods
+        path:'/goodsadd',
+        component : goodsadd
     },{
-        path:'/changuser',
-        component : changuser
+        path:'/userdetails',
+        component : userdetails
+    },{
+        path:'/useradd',
+        component : useradd
+    },{
+        path:'/goodsamend',
+        component :goodsamend
     },]
  
 });

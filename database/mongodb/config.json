@@ -1,0 +1,5 @@
+{
+    "PODB" : 2019,
+    "mongourl" :"mongodb://localhost:27017",
+    "database" :"chunqiu"
+}

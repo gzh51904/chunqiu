@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="button">
-             <Button type="error" ghost><Icon type="ios-add-circle-outline" size="14"/>添加</Button>
-            <Button type="error" ghost><Icon type="md-trash" size="14"/>删除</Button>
+             <Button type="error" ghost @click.native="toaddgoods"><Icon type="ios-add-circle-outline" size="14"/>添加</Button>
+            <Button type="error" ghost @click.native="deletegoods"><Icon type="md-trash" size="14"/>删除</Button>
         </div>
        <div class="shuru">
-            <Input v-model="value13">
-                <Select v-model="select3" slot="prepend" style="width: 80px">
+            <Input>
+                <Select  slot="prepend" style="width: 80px">
                     <Option value="day">Day</Option>
                     <Option value="month">Month</Option>
                 </Select>
@@ -15,8 +15,10 @@
        </div>
         
         <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-        <Button @click="handleSelectAll(true)">Set all selected</Button>
-        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+        <div class="tables">  
+            <Page :total="dataCount" :page-size="pageSize" @on-change="changepage"
+            show-total show-sizer show-elevator></Page>
+       </div>
     </div>
 </template>
 <script>
@@ -24,95 +26,129 @@ export default {
     data(){
         return{
             columns4: [
+                {
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },
+                {
+                    title:'用户名',
+                    key: 'username'
+                },
+                {
+                    title: '密码',
+                    key: 'password'
+                },
+                {
+                    title: '注册时间',
+                    key: 'address'
+                },
                     {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
-                    {
-                        title:'用户名',
-                        key: 'name'
-                    },
-                    {
-                        title: '密码',
-                        key: 'age'
-                    },
-                    {
-                        title: '注册时间',
-                        key: 'address'
-                    },
-                     {
-                        title: '操作',
-                        key: 'set',
-                         render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.index)
-                                        }
+                    title: '操作',
+                    key: 'set',
+                        render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.look(params.row)
                                     }
-                                }, 'View'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.index)
-                                        }
+                                }
+                            }, '查看'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.cancel(params.row)
                                     }
-                                }, 'Delete')
-                            ]);
-                         }
-                    }
-                ],
-                data1: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03',
-                       
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01',
-                       
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02',
-                         
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04',
-                        
-                    }
-                ]
-            }
+                                }
+                            }, '销户')
+                        ]);
+                        }
+                }
+            ],
+            data1: [],
+            alldata:[],
+            pageSize:5,
+            dataCount:0,
+            pageCurrent: 1,
+            menuActive:'',
+        }
     },
     methods: {
-    handleSelectAll (status) {
-        this.$refs.selection.selectAll(status);
+        handleSelectAll (status) {
+            this.$refs.selection.selectAll(status);
+        },
+        //点击，切换页面
+        changepage(index) {
+            //需要显示开始数据的index,(因为数据是从0开始的，页码是从1开始的，需要-1)
+            let _start = (index - 1) * this.pageSize;
+            //需要显示结束数据的index
+            let _end = index * this.pageSize;
+            //截取需要显示的数据
+            this.data1 = this.alldata.slice(_start, _end);
+            //储存当前页
+            this.pageCurrent = index;
+        },
+        //跳转添加商品页事件
+        toaddgoods(){        
+        window.location.hash = "#/changuser"
+        this.$router.replace('/changuser');
+        },
+
+        //删除商品
+        deletegoods(){
+            alert("功能正在开发！")
+        },
+        //销毁用户
+        cancel({username,password}){
+            this.$Modal.confirm({
+                title: '你确定删除该用户吗',
+                content: '<div>用户信息比较重要，删除后用户信息将被销毁，且无法登录APP</div>',
+                onOk:  () => {
+                    this.$Message.info( 
+                         this.$axios.delete('/reg',{params:{username,password}}
+                        ) .then( (response) =>{
+                        // console.log("删除成功")
+                            this.get();
+                        }) 
+                        .catch(function (error) {
+                    
+                        }) );
+                },
+                onCancel: () => {
+                    this.$Message.info('点击了取消');
+                }
+            });
+        },
+        //查看用户信息
+        look(query){
+            this.$router.replace({path:'/changuser',query})
+        },
+        async get(){
+            let load = this.$Message.loading('正在加载用户数据，请稍等...', 0);
+            setTimeout(load, 1000);
+            let {data} =  await this.$axios.get('/users')
+            this.alldata = data;
+            this.data1 = data.slice(0,5);
+            //分页显示所有数据总数
+            this.dataCount = this.alldata.length;
+            }
+    },
+     created(){
+        this.get();
     }
     
-}
 }
 </script>
 <style>
