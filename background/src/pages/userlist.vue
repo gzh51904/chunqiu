@@ -102,8 +102,8 @@ export default {
         },
         //跳转添加商品页事件
         toaddgoods(){        
-        window.location.hash = "#/changuser"
-        this.$router.replace('/changuser');
+        window.location.hash = "#/useradd"
+        this.$router.replace('/useradd');
         },
 
         //删除商品
@@ -133,7 +133,7 @@ export default {
         },
         //查看用户信息
         look(query){
-            this.$router.replace({path:'/changuser',query})
+            this.$router.replace({path:'/userdetails',query})
         },
         async get(){
             let load = this.$Message.loading('正在加载用户数据，请稍等...', 0);
