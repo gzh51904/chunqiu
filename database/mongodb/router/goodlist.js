@@ -47,11 +47,24 @@ Router.delete('/',async(req,res)=>{
     try{
         result = await db.del(colname,query);
         result = formatdata({});
-        console.log("hehe")
     }
     catch(err){
         result = formatdata({status:400,msg:err})
     }
+    res.send(result);
+})
+//修改
+Router.put('/',async(req,res)=>{
+    let {query,body} = req
+    let result;
+    try{
+        result = await db.amend(colname,query,body);
+        result = formatdata({data:result});
+    }
+    catch(err){
+        result = formatdata({status:400,msg:err})
+    }
+    console.log(result)
     res.send(result);
 })
 

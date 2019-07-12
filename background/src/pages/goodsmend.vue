@@ -1,10 +1,14 @@
 <template>
   <i-form :label-width="80">
         <Form-item label="出发城市">
-            <i-input v-model="form.cityName" placeholder="请输入"></i-input>
+            <i-input v-model="form.cityName" placeholder="请输入">
+                <i-button slot="append" @click="amend({cityName:form.cityName})">修改</i-button>
+            </i-input>
         </Form-item>
         <Form-item label="目的城市">
-            <i-input v-model="form.destinationCityName" placeholder="请输入"></i-input>
+            <i-input v-model="form.destinationCityName" placeholder="请输入">
+                <i-button slot="append" @click="amend({destinationCityName:form.destinationCityName})">修改</i-button>
+            </i-input>
         </Form-item>
         <Form-item label="类型">
             <i-select v-model="form.productTypeName" placeholder="请选择">
@@ -13,7 +17,9 @@
             </i-select>
         </Form-item>
         <Form-item label="价格">
-            <i-input v-model="form.price" placeholder="请输入"></i-input>
+            <i-input v-model="form.price" placeholder="请输入">
+                <i-button slot="append" @click="amend({price:form.price})">修改</i-button>
+            </i-input>  
         </Form-item>
          <Form-item label="照片">
             <Upload
@@ -21,17 +27,15 @@
              name="chunqiu"
              :on-success="pice"
             action="http://localhost:2019/upload/chunqiu">
-                <i-button  icon="ios-cloud-upload-outline">上传照片</i-button>
+            <img style="width:200px;height:200px" :src="form.imgurl" alt="">
+                <i-button  icon="ios-cloud-upload-outline">修改图片</i-button>
             </Upload>
          </Form-item>
         <Form-item label="描述">
-            <i-input v-model="form.productName" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></i-input>
+            <i-input v-model="form.productName" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入...">
+                <i-button slot="append" @click="amend({productName:form.productName})">修改</i-button>
+            </i-input>
         </Form-item>
-        <i-button type="primary">保存修改</i-button>
-         <Alert type="success" show-icon v-show="tipshow">
-       添加商品成功
-        <span slot="desc">你修改的商品已成功添加到数据库，你可以选择唱一首鸡里太美来表达你吃屎的心情</span>
-    </Alert>
   </i-form>
 </template>
 <script>
@@ -59,7 +63,7 @@ export default {
                 scheduleDateList : [ "7月", "8月"],
                 sortno : "999"
             },
-            tipshow:false,
+            tipshow:false
         }
     },
     methods:{
@@ -67,12 +71,29 @@ export default {
         //    console.log('g')
         //    console.log(res)
            this.form.imgurl = 'http://localhost:2019/' + res.path;
+       },
+       amend(query){
+           let productId = this.form.productId; 
+           this.$axios.put('/goodlist/?productId='+productId,query)  
+            .then( ({data}) =>{
+                console.log(data)
+                if(data.msg == "success"){
+                     this.$Message.success('修改成功');
+                }else{
+                     this.$Message.success('修改失败');
+                }
+            }) 
+            .catch(function (error) {
+            console.log(error);
+            }) 
        }
     },
     created(){
         let arr = this.$route.query;
         let brr = this.form;
-        this.from = Object.assign(brr,arr)
+        console.log(this.form)
+        this.form = Object.assign(brr,arr)
+         this.form.imgurl = require(arr.imgurl)
     }
 
 }

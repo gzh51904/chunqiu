@@ -132,8 +132,9 @@ export default {
             });
         },
         //查看用户信息
-        look(query){
-            this.$router.replace({path:'/userdetails',query})
+        look(query){       
+           let  {_id}= query;
+            this.$router.replace({path:'/userdetails',query:{_id}})
         },
         async get(){
             let load = this.$Message.loading('正在加载用户数据，请稍等...', 0);

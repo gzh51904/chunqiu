@@ -28,7 +28,6 @@
                   </div>
                 </Header>
                 <Content :style="{padding: '30px 16px 0px 16px'}">
-
                     <Card>
                       <router-view/>
                     </Card>
@@ -47,7 +46,7 @@
           <Form-item label="密码">
             <i-input v-model="AdmPassword" placeholder="请输入"></i-input>
           </Form-item>
-          <i-button class="zhuce" @click="sign">注册</i-button>
+          <!-- <i-button class="zhuce" @click="sign">注册</i-button> -->
           <i-button @click="denglu">登录</i-button>
           </i-form>
         </div>
@@ -91,7 +90,7 @@ export default {
            name :  'goodsadd',
            path:  '/goodsadd'
          },{
-           title : '商品详情',
+           title : '修改商品信息',
            name :  'goodsmend',
            path:  '/goodsmend'
          },]

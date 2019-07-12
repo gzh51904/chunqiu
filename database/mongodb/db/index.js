@@ -80,16 +80,24 @@ exports.del = async(colname,data)=>{
     client.close();
 }
 //修改
-exports.amend = async(colname,newdata,query)=>{
+exports.amend = async(colname,query,newdata)=>{
     let {client,db} = await connect();
     let result ;
+    // console.log(query)
     try{
-        result= await db.collection('akun').updateOne(query,{$set:newdata});
+        result= await db.collection(colname).updateOne(query,{$set:newdata});
+        if(result.result.nModified == 1){
+            result = "ok";
+        }else{
+            result = err;
+        }
+      
     }catch(err){
         result = err;
     }
     client.close();
-    return result.data[0];
+    return result;
 }
+
 
 
