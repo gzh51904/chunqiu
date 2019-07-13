@@ -1,15 +1,28 @@
 module.exports = {
   presets: [
-    '@vue/app',
-    // ["@babel/env", { "modules": false }]
+    '@vue/app'
   ],
-  "plugins": [
-    [
-      "component",
-      {
-        "libraryName": "element-ui",
-        "styleLibraryName": "theme-chalk"
-      }
-    ]
-  ]
+  // "plugins": [
+  //   [
+  //     "component",
+  //     {
+  //       "libraryName": "element-ui",
+  //       "styleLibraryName": "theme-chalk"
+  //     }
+  //   ]
+  // ]
 }
+// module.exports = {
+//   presets: [
+//     '@vue/app'
+//   ],
+//   "plugins": [
+//     [
+//       "component",
+//       {
+//         "libraryName": "mint-ui",
+//         "style": true
+//       }
+//     ]
+//   ]
+// }
