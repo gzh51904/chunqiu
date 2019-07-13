@@ -19,11 +19,13 @@ Router.get('/',async (req,res)=>{
 })
 Router.get('/:id',async (req,res)=>{
     let guid = req.params.id;
+    console.log(guid)
     let result = await db.searchone(colname,guid); 
         if(result.length == 0){
             result = formatdata({status:400,msg:"err"})
         }
         else{
+
         }
        res.send(result);
 })

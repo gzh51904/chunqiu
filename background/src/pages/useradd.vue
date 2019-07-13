@@ -29,24 +29,37 @@ export default {
                 password: '',
                 sex:'',
             },
+            emptyform:{
+                username:'',
+                password: '',
+                sex:'',
+            },
             tipshow : false
         }
     },
     methods:{
          pushgood(){
-            let arr = this.userform;
-            this.$axios.post('/reg',{  
-                      ...arr  ,address:new Date()                  
-            })  
-            .then( (response) =>{
-                this.tipshow= true;
-                setTimeout(()=>{
-                    this.tipshow = false;
-                },7000)
-            }) 
-            .catch(function (error) {
-            console.log(error);
-            }) 
+             let signjudge = Object.keys(this.userform).some(key=>this.userform[key]=="");
+             if(signjudge){
+                 alert("请先完善信息！")
+             }
+             else{
+                let arr = this.userform;
+                this.$axios.post('/reg',{  
+                        ...arr  ,address:new Date()                  
+                })  
+                .then( (response) =>{
+                    this.userform = this.emptyform;
+                    this.tipshow= true;
+                    setTimeout(()=>{
+                        this.tipshow = false;
+                    },7000)
+                }) 
+                .catch(function (error) {
+                console.log(error);
+                }) 
+             }
+           
         },
     }
 }

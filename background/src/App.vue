@@ -2,38 +2,48 @@
   <div id="app">  
     <div id="islogin" v-if="islogined">
           <Layout :style="{minHeight: '100vh'}">
-            <Sider :collapsible=true :collapsed-width="78" v-model="isCollapsed" width="240">
+            
+            <Sider :collapsible=true :collapsed-width="78" v-model="isCollapsed" width='240' :style="{position: 'fixed',  height: '100vh',left: 0, overflow: 'auto'}">
               <h2><Icon type="ios-apps" />后台管理系统</h2>
-                <Col span="4">
-                  <Menu :theme="theme2" @on-select="feng" :accordion=true>
-                      <Submenu  v-for="( item,idx) of navlist" :idx=idx :name=idx :key=idx>
-                          <template slot="title">
-                              <Icon type="ios-paper" />
-                             {{item.title}}
-                          </template>
-                          <MenuItem v-for="item of item.list"  :name="item.name"  :to=item.path :key=item.name :active-name="$route.name"> {{item.title}}</MenuItem>
-                 
-                      </Submenu>   
-                  </Menu>
+              <!-- <div>
+                <i-button @click="text">测试</i-button>
+              </div> -->
+               
+              <Col span="4">
+                <Menu :theme="theme2" @on-select="feng" :accordion=true :active-name="showone" :open-names="[showtwo]">
+                   <!-- <Menu :theme="theme2" @on-select="feng" :accordion=true active-key="text"> -->
+                    <Submenu  v-for="( item,idx) of navlist" :name=item.title>
+                        <template slot="title">
+                            <Icon type="ios-paper" />
+                            {{item.title}}
+                        </template>
+                        <MenuItem v-for="item of item.list" :name="item.title" :to=item.path  > {{item.title}}</MenuItem>                
+                        
+                        <!-- <MenuItem v-for="item of item.list"  :name="item.name"  :to=item.path :key=item.name > {{item.title}}</MenuItem>                 -->
+                    </Submenu>   
+                </Menu>
               </Col>
             </Sider>
-            <Layout>
-                <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-                  <div v-for="(item,idx) of navlist" :key=idx+10  v-show="item.title==acctivetitle">
-                      <Breadcrumb :style="{margin: '16px 0'}">
-                        <BreadcrumbItem>后台系统</BreadcrumbItem>
-                        <BreadcrumbItem>{{b}}</BreadcrumbItem>
-                        <BreadcrumbItem>{{a}}</BreadcrumbItem>
-                    </Breadcrumb>
-                  </div>
-                </Header>
-                <Content :style="{padding: '30px 16px 0px 16px'}">
-                    <Card>
-                      <router-view/>
-                    </Card>
-                </Content>
+            <Layout :style="{marginLeft: '240px'}">
+              <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
+                <div v-for="(item,idx) of navlist" :key=idx+10 >
+                  <Breadcrumb :style="{margin: '16px 0'}">
+                    <BreadcrumbItem>后台系统</BreadcrumbItem>
+                    <BreadcrumbItem>{{showtwo}}</BreadcrumbItem>
+                    <BreadcrumbItem>{{showone}}</BreadcrumbItem>
+                  </Breadcrumb>
+               
+                </div>
+                  <Button :size="buttonSize" type="warning" class="tuichu" @click="out">退出</Button>
+              </Header>
+              <Content :style="{padding: '30px 16px 0px 16px'}">
+                <Card>
+                  <router-view/>
+                </Card>
+              </Content>
             </Layout>
-        </Layout>
+          </Layout>
+          
       </div>  
       
       <div id="notlogin" v-else>
@@ -58,57 +68,20 @@
 
 <script>
 import Vue from 'vue'
-
+import {setCookie,getCookie} from './cookie'
 
 export default {
   name: 'app',
   data (){
     return {
-      navlist:[{
-         title:'用户管理',
-         list:[{
-           title : '用户信息',
-           name :  'userlist',
-           path:  '/userlist'
-         },{
-           title : '添加用户信息',
-           name :  'useradd',
-           path:  '/useradd'
-         },{
-           title : '用户详细信息',
-           name :  'userdetails',
-           path:  '/userdetails'
-         },] 
-      },{
-         title:'商品管理',
-       list:[{
-           title : '商品信息',
-           name :  'goodslist',
-           path:  '/goodslist'
-         },{
-           title : '添加/上架商品',
-           name :  'goodsadd',
-           path:  '/goodsadd'
-         },{
-           title : '修改商品信息',
-           name :  'goodsmend',
-           path:  '/goodsmend'
-         },]
-      }],
      isCollapsed: false,
      theme2:'dark',
-     showlist:'用户信息',
-     acctivetitle :'用户管理',
      AdmName: '',
      AdmPassword : '',
      islogined : false,
      a:'用户信息',
      b:'用户管理',
-     menuActive :''
     }
-  },
-  components: {
-    // goodslist,userlist
   },
   computed: {
     menuitemClasses: function () {
@@ -116,10 +89,23 @@ export default {
             'menu-item',
             this.isCollapsed ? 'collapsed-menu' : ''
         ]
-      }
+      },
+      navlist(){
+        return this.$store.state.navlist.map(item=>item)
+      },
+      showone(){
+        return this.$store.state.showone;
+      },
+      showtwo(){
+        return this.$store.state.showtwo;
+      },
     },
+  created(){
+    if(getCookie("islogined")=="true"){
+     this.islogined = true;
+    }
+  }, 
   methods:{
-
     activetit(val){
       this.acctivetitle = val;
     },
@@ -136,7 +122,8 @@ export default {
       })  
       .then( ({data}) =>{
         if(data.msg=="success"){
-          localStorage.token = data.data;
+          setCookie("islogined",true)
+          // localStorage.token = data.data;
            this.islogined = true
         }
       else{
@@ -150,21 +137,13 @@ export default {
 
     },
     feng(gg){
-      let arr = this.navlist
-      let obj;
-      for(var i=0;i<arr.length;i++){
-        for( var j=0;j<arr[i].list.length;j++){
-          if(arr[i].list[j].name==gg){
-            this.a = arr[i].list[j].title, 
-            this.b = arr[i].title
-          break;
-          }
-        }
-      }
+      this.$store.commit("ergodic",gg)
+     
     },
-    // loading(){
-      
-    // }
+    out(){
+       setCookie("islogined",false)
+      this.islogined = false
+    }
   }
 }
 </script>
@@ -214,14 +193,14 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(85, 124, 150, 0.671);
+    background: url("http://10.3.141.56:2019/uploads\\6857d6a4bfe356e.jpg") no-repeat ;
+    background-size:100% 100%;
   }
 #box{
-    width: 400px;
+    width: 450px;
     height: 300px;
-    background: rgb(52, 148, 124);
     position:fixed;
-    top:50%;
+    top:40%;
     left:50%;
     margin-left:-200px;
     margin-top:-150px;
@@ -231,13 +210,32 @@ export default {
 }
 #box h2{
   text-align:center;
-  margin-top:20px;
-  font-size:33px;
+  padding-bottom:60px;
+  font-size:40px;
   margin-bottom:27px;
- 
+
+ border-bottom:3px solid #ffffff
 }
 #box .zhuce{
   margin-right:27px;
 }
-
+.ivu-layout-sider-trigger{
+  display:none!important;
+}
+.ivu-card-body{
+  padding:50px!important;
+}
+.layout{
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.tuichu{
+  position: absolute;
+  right:90px;
+  top:20px;
+  padding:10px 20px;
+}
 </style>

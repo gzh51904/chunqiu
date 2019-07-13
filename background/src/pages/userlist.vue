@@ -101,9 +101,10 @@ export default {
             this.pageCurrent = index;
         },
         //跳转添加商品页事件
-        toaddgoods(){        
-        window.location.hash = "#/useradd"
-        this.$router.replace('/useradd');
+        toaddgoods(){  
+            this.$store.commit("ergodic","添加用户信息")   
+            window.location.hash = "#/useradd"
+            this.$router.replace('/useradd');
         },
 
         //删除商品
@@ -116,15 +117,16 @@ export default {
                 title: '你确定删除该用户吗',
                 content: '<div>用户信息比较重要，删除后用户信息将被销毁，且无法登录APP</div>',
                 onOk:  () => {
-                    this.$Message.info( 
+                   
                          this.$axios.delete('/reg',{params:{username,password}}
                         ) .then( (response) =>{
                         // console.log("删除成功")
+                         this.$Message.info("删除成功" )
                             this.get();
                         }) 
                         .catch(function (error) {
                     
-                        }) );
+                        }) ;
                 },
                 onCancel: () => {
                     this.$Message.info('点击了取消');

@@ -22,13 +22,17 @@
             </i-input>  
         </Form-item>
          <Form-item label="照片">
-            <Upload
+              <Upload style="width:350px;height:220px;"
+            type="drag"
             multiple
              name="chunqiu"
              :on-success="pice"
-            action="http://localhost:2019/upload/chunqiu">
-            <img style="width:200px;height:200px" :src="form.imgurl" alt="">
-                <i-button  icon="ios-cloud-upload-outline">修改图片</i-button>
+              show-upload-list=false
+            action="http://10.3.141.56:2019/upload/chunqiu">
+              <!-- <div style="padding: 50px 0;width:350px;height:200px;" > -->
+            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <!-- <p>点击或拖拽上传</p> -->
+        <!-- </div> -->
             </Upload>
          </Form-item>
         <Form-item label="描述">
@@ -39,6 +43,7 @@
   </i-form>
 </template>
 <script>
+import { setTimeout } from 'timers';
 export default {
     data(){
         return{
@@ -66,11 +71,34 @@ export default {
             tipshow:false
         }
     },
+     created(){
+        //  let {content} = this.$route.query
+         if(this.$route.query._id !=undefined){
+            let arr = this.$route.query;
+            let brr = this.form;
+            this.form = Object.assign(brr,arr)
+            this.form.imgurl = require(arr.imgurl)
+         }else{
+             this.error(true)
+            setTimeout(()=>{
+                 this.$store.commit("ergodic","商品信息");
+                window.location.hash = "#/goodslist"
+                this.$router.replace('/goodslist');
+            },2000)
+         }
+       
+    },
     methods:{
+        error (nodesc) {
+                this.$Notice.error({
+                    title: '没有选择需要修改的商品！（2秒后自动跳转）',
+                    desc: nodesc ? '请先选择商品列表选择商品!' : '',
+                    duration: 2
+                });
+            },
        pice(res){
-        //    console.log('g')
-        //    console.log(res)
-           this.form.imgurl = 'http://localhost:2019/' + res.path;
+           this.form.imgurl = 'http://10.3.141.56:2019/' + res.path;
+             this.amend({imgurl:this.form.imgurl})
        },
        amend(query){
            let productId = this.form.productId; 
@@ -88,16 +116,12 @@ export default {
             }) 
        }
     },
-    created(){
-        let arr = this.$route.query;
-        let brr = this.form;
-        console.log(this.form)
-        this.form = Object.assign(brr,arr)
-         this.form.imgurl = require(arr.imgurl)
-    }
+   
 
 }
 </script>
 <style>
-
+.ivu-upload-list-file-finish{
+    display: none;
+}
 </style>

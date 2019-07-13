@@ -7,8 +7,8 @@
        <div class="shuru">
             <Input>
                 <Select slot="prepend" style="width: 80px">
-                    <Option value="day">Day</Option>
-                    <Option value="month">Month</Option>
+                    <Option value="嘻嘻嘻">嘻嘻嘻</Option>
+                    <Option value="哈哈哈">哈哈哈</Option>
                 </Select>
                 <Button slot="append" icon="ios-search"></Button>
             </Input>
@@ -17,7 +17,7 @@
         <Table border ref="selection" :columns="columns4" :data="data1" class="table"></Table>
         <div class="tables">  
             <Page :total="dataCount" :page-size="pageSize" @on-change="changepage"
-            show-total show-sizer show-elevator></Page>
+            show-total show-sizer show-elevator :current="pageCurrent"></Page>
        </div>
       
 
@@ -29,10 +29,32 @@ export default {
         return{
             columns4: [
                     {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
+                        title: '景点图片',
+                        key: 'imgurl',
+                        render: (h, params) => {
+                                return h('div', {
+                                    attrs: {
+                                        style: 'width: 120px;height: 70px;'
+                                    },
+                                }, [
+                                h('img', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    attrs: {
+                                        src: params.row.imgurl, 
+                                        style: 'width: 120px;height: 70px;'			
+                                        },
+                                 
+                                    
+                                }),
+                            ])
+                           
+                        },
+                  
                     },
+
                     {
                         title: '出发城市',
                         key: 'cityName'
@@ -47,7 +69,11 @@ export default {
                     },
                     {
                         title:'描述',
-                        key :'productName'
+                        key :'productName',
+                        // ellipsis :true,
+                        // tooltip : true,
+                        // maxWidth : '200px'
+                        className:'ren'
                     },
                     {
                         title: '类型',
@@ -56,7 +82,8 @@ export default {
                     {
                         title:'操作',
                         key : 'action',
-                          render: (h, params) => {
+                        width:'200px',
+                          render: (h, params) => {       
                             return h('div', [
                                 h('Button', {
                                     props: {
@@ -89,7 +116,7 @@ export default {
                                         size: 'small'
                                     },
                                       style: {
-                                        marginLeft: '30px'
+                                        marginLeft: '10px'
                                     },
                                     on: {
                                         click: () => {
@@ -105,7 +132,7 @@ export default {
                 alldata:[],
                 pageSize:5,
                 dataCount:0,
-                pageCurrent: 1
+                pageCurrent: 1,
             }
     },
     methods: {
@@ -125,7 +152,7 @@ export default {
         },
         //跳转添加商品页
         toaddgoods(){
-
+            this.$store.commit("ergodic","添加/上架商品")
             window.location.hash = "#/goodsadd"
             this.$router.replace('/goodsadd');
         },
@@ -134,6 +161,8 @@ export default {
             // this.$refs.del[0].blur();
         },
         show(query){
+               this.$store.commit("ergodic","修改商品信息")
+            window.location.hash = "#/goodsmend"
             this.$router.replace({path:'/goodsmend',query})
         },
         remove(a){
@@ -141,15 +170,17 @@ export default {
                 title: '你确定删除该商品吗',
                 content: '<p>删除后，商品信息会丢失！</p>',
                 onOk: () => {
-                    this.$Message.info( 
+                  
                          this.$axios.delete('/goodlist',{params:{productId:a}}
                         ) .then( (response) =>{
                         // console.log("删除成功")
+                        this.pageCurrent = 1
+                          this.$Message.info( "删除成功")
                         this.get();
                         }) 
                         .catch(function (error) {
                     
-                        }) );
+                        }) ;
                 },
                 onCancel: () => {
                     this.$Message.info('点击了取消');
@@ -161,6 +192,7 @@ export default {
              let load = this.$Message.loading('正在加载商品数据中...', 0);
             setTimeout(load, 1000);
              let {data} =  await this.$axios.get('/goodlist')
+            //  data.map(item=>item.imgurl = require(item.imgurl))
             this.alldata = data;
             this.data1 = data.slice(0,5);
             localStorage.goods = data.length;

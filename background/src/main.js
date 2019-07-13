@@ -7,7 +7,7 @@ import axios from 'axios'
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'http://localhost:2019'
+axios.defaults.baseURL = 'http://10.3.141.56:2019'
 
 let token = localStorage.token?localStorage.token:'';
 // axios的请求拦截

@@ -1,0 +1,22 @@
+       该软件由“油脸博士”破解并分享，切记勿将此软件上传至网络大量曝光(因前车之鉴~本人分享到油脸博士G+群组不到两个小时就被和谐了，低调使用才能保持长久有效) 
+
+0：初次启动可能显示无法连接服务器，建议重启。若依然无法连接建议删除“settings.yaml”配置文件再启动试试
+
+1：待流量用尽时重启lantern软件就能恢复500M免费高速流量
+
+2：本破解版软件仅仅解除了流量限制，能否正常使用与lantern官方提供的路线有关，本人无法提供解决办法
+
+3：蓝灯已经被国内的某安全卫士、某管家设入黑名单，可能会提示病毒，建议卸载某安全卫士、某管家、某狗\度输入法等动机不纯的国产软件(怕病毒请绕道)
+
+4：如果提示缺少100.dll文件可以参考《百度经验》修复https://jingyan.baidu.com/article/59a015e357a978f79588654d.html
+
+5：想及时获取新的破解版本，请加入我的G+社区\TG群组\TG频道
+G+社区（节点分享）
+https://plus.google.com/communities/113200769941087876492?sqinv=TXpIOXZsRnUzTENETEZNNlhfTW1IdVFxNnVXMXN3
+TG频道：分享翻墙节点
+https://t.me/joinchat/AAAAAEvnT-th4YKBWoUjFw
+TG交流群:翻墙问题讨论
+https://t.me/joinchat/Hq8nNUfne4OZoadUZv7LTg
+Fb群组：分享翻墙VPN方式和节点
+https://www.facebook.com/groups/375531039654027/
+公益不易,热心支持“油脸博士”请打开支付宝搜索"542679484"领一个红包,每天限领一次，谢谢支持

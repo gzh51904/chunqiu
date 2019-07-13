@@ -39,14 +39,12 @@ exports.searchall = async(colname)=>{
 //查询获取单个商品
 exports.searchone = async(colname,guid)=>{
     let {client,db} = await connect();
-    guid = Number(guid);
     let result;
     try{
-        result = await db.collection(colname).find({guid:guid}).toArray();
+        result = await db.collection(colname).find({productId:guid}).toArray();
     }catch(err){
         result = err;
     }
-    // console.log(result)
     client.close();
     return result;
     
