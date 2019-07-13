@@ -92,8 +92,8 @@ export default {
            path:  '/goodsadd'
          },{
            title : '商品详情',
-           name :  'goodsamend',
-           path:  '/goodsamend'
+           name :  'goodsmend',
+           path:  '/goodsmend'
          },]
       }],
      isCollapsed: false,

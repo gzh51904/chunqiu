@@ -12,7 +12,7 @@ import userlist from '../pages/userlist.vue'
 import goodsadd from '../pages/goodsadd.vue'
 import userdetails from '../pages/userdetails.vue'
 import useradd from '../pages/useradd.vue'
-import goodsamend from '../pages/goodsamend.vue'
+import goodsmend from '../pages/goodsmend.vue'
 //使用
 Vue.use(VueRouter)
 Vue.use(iView);
@@ -35,8 +35,8 @@ let router = new VueRouter({
         path:'/useradd',
         component : useradd
     },{
-        path:'/goodsamend',
-        component :goodsamend
+        path:'/goodsmend',
+        component :goodsmend
     },]
  
 });

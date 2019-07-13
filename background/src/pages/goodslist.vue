@@ -126,15 +126,15 @@ export default {
         //跳转添加商品页
         toaddgoods(){
 
-            window.location.hash = "#/addgoods"
-            this.$router.replace('/addgoods');
+            window.location.hash = "#/goodsadd"
+            this.$router.replace('/goodsadd');
         },
         deletegoods(){
             alert("暂不支持该改改改改i功能！")
             // this.$refs.del[0].blur();
         },
         show(query){
-            this.$router.replace({path:'/lookgoods',query})
+            this.$router.replace({path:'/goodsmend',query})
         },
         remove(a){
              this.$Modal.confirm({
