@@ -1,5 +1,5 @@
 <template>
-    <div>客服</div>
+    <div>404啊，你是狗吧！</div>
 </template>
 <script>
     export default {
