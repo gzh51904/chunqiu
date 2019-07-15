@@ -7,7 +7,7 @@
 			/></span>
 			<p class="cityname">{{ item.destinationCityName }}</p>
 		</div>
-		<h2><i></i>推荐目的地</h2>
+		<h2 class="dianzanparent"><i class="shoudianzan iconfont icon-dianzan"></i>推荐目的地</h2>
 		<ul class="cityTakebox">
 			<li class="cityTake" v-for="item in tuijian" :key="item.id">
 				<a href="#">{{ item.destinationCityName }}</a>
@@ -105,6 +105,14 @@ li {
 			/* background: #dbdbdb; */
 			/* opacity: 0.1; */
 			color: #ffffff !important;
+		}
+	}
+	.dianzanparent{
+		font-size:15px;
+		.shoudianzan{
+		font-size:15px;
+		color:orange;
+
 		}
 	}
 }

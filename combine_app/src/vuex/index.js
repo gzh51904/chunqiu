@@ -6,7 +6,8 @@ const store = new Vuex.Store({
     state:{
         showdaohang:true,
         showtop:true,
-        showbottom:true
+        showbottom:true,
+        axiang: localStorage.axiang? localStorage.axiang:''
     },
     mutations:{
         changedaohang(state,val){
@@ -17,7 +18,11 @@ const store = new Vuex.Store({
         },
         changeshowbottom(state,flg){
             state.showbottom = flg
-        }
+        },
+        change(state,payload){
+            state.axiang = payload;
+            localStorage.axiang = payload;
+            }
     }
 })
 

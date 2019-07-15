@@ -1,44 +1,50 @@
 <template>
-  
-
-
-
-
-
   <div id="box">
     <!-- <header v-show="showtop" class="appheader">
       <a href="javascript:;" @click="goBack">
         <i class="iconfont icon-fanhui" style="color:#00be88;font-weight:600;"></i>
       </a>
       <h1>发现</h1>
-    </header> -->
+    </header>-->
 
+    <keep-alive>
+      <router-view />
+    </keep-alive>
 
-
-
-    <router-view />
-
-
-
-
-
-
-
-
+    <el-footer>
+      <!-- v-model="selected" -->
+      <mt-tabbar fixed v-model="selected">
+        <mt-tab-item
+          :id="item.name"
+          v-for="item in pages"
+          :key="item.path"
+          @click.native="goto(item.path,item.name)"
+        >
+          <!-- <router-link :to="item.path" tag="span"> -->
+          <span class="navBottom">
+            <!-- <img class="navPic" slot="icon" :src="item.icon" /> -->
+            <i class="navPic" :class="item.classname"></i>
+            <p class="navWord">{{ item.title }}</p>
+          </span>
+          <!-- </router-link> -->
+        </mt-tab-item>
+      </mt-tabbar>
+    </el-footer>
 
     <!-- 尾部导航 -->
-    <div v-if="showdaohang" class="footer">
+    <!-- <div v-if="showdaohang" class="footer">
       <a
         @click="goto(item.path,item.name)"
         href="javascript:void(0);"
         v-for="item in pages"
         :key="item.path"
-        :class="{actname:item.name==active}"
+        v-model="selected"
+        :class="{actname:item.name==selected}"
       >
         <i :class="item.classname"></i>
         <span>{{item.title}}</span>
       </a>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -51,7 +57,7 @@ export default {
   name: "app",
   data() {
     return {
-      active: "Home",
+      selected: "Home",
       pages: [
         {
           title: "首页",
@@ -86,16 +92,17 @@ export default {
       ]
     };
   },
-  computed:{
-    showdaohang(){
+  computed: {
+    showdaohang() {
       return this.$store.state.showdaohang;
     },
-    ...mapState(['showtop',"showbottom"]),
-
+    ...mapState(["showtop", "showbottom"])
   },
   methods: {
-    goto(path,name) {
-      this.$router.push(path); 
+    goto(path, name) {
+      console.log("sdsdsdd",path)
+        this.$router.push(path);
+
       this.active = name;
     },
     goBack() {
@@ -105,26 +112,38 @@ export default {
     closekefu() {
       this.showkefu = false;
     },
-    phoneAsk(){
-      window.location.href = 'tel://' + '13326774980';
+    phoneAsk() {
+      window.location.href = "tel://" + "13326774980";
     },
-    onlineKefu(){
+    onlineKefu() {
       this.showkefu = false;
-      this.$router.push({path:'/zixun'});
+      this.$router.push({ path: "/zixun" });
     }
   },
   created() {
-    let hash = window.location.hash.slice(1);
-    this.active = hash.substr(1);
+    // 刷新保持高亮效果，刷新后保持当前的高亮的页面
+    let hash = window.location.hash.slice(2);
+    // console.log("7777", hash);
+    if (hash != "") {
+      if (hash.slice(0, 4) == 4) {
+        console.log("qqqqqqq", hash);
+        this.active = "goal";
+      } else {
+        hash = hash.replace(hash[0], hash[0].toUpperCase());
+        this.selected = hash;
+      }
+    } else {
+      this.active = "home";
+    }
   }
 };
 </script>
 
 <style scoped lang='scss'>
 @import "./components/css/app.scss";
-.actname{
-  color:#58bc58 !important;
-  font-weight:bold;
+.actname {
+  color: #58bc58 !important;
+  font-weight: bold;
 }
 .footer {
   z-index: 999;
@@ -146,6 +165,23 @@ export default {
     span {
       font-size: 12px;
       text-align: center;
+    }
+  }
+}
+.mint-tabbar {
+  height: 50px;
+
+  > a {
+    padding: 7px 0 5px 0 !important;
+    .navBottom {
+      .navPic {
+        font-size: 22px;
+      }
+
+      .navWord {
+        margin: 5px 0 0 0;
+        font-size:10px;
+      }
     }
   }
 }
