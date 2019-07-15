@@ -23,6 +23,7 @@ import Advice from "../components/Advice.vue"
 import Zixun from "../components/Zixun.vue"
 import Log from "../components/Log.vue"
 import Kefu from "../components/Kefu.vue"
+import Reg from "../components/Reg.vue"
 
 //目的地页子组件
 import Hotour from "../components/pages/Hotour.vue"
@@ -138,6 +139,10 @@ let router = new VueRouter({
         path: "/log",
         component: Log,
         name: "Log"
+    },{
+        path: "/reg",
+        component: Reg,
+        name: "Reg"
     }]
 })
 

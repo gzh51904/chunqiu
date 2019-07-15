@@ -1,6 +1,12 @@
 <template>
-  <div  style="height:100%;overflow:auto;" @scroll="handlescroll">
-    <mt-search cancel-text="取消" placeholder="按关键词搜索一下" class="topss"></mt-search>
+  <div class="aa" style="height:100%;width:100%;position:fixed;top:0;left:0;overflow:auto;padding-top: 2.625rem;" @scroll="handlescroll">
+    <header class="appheader">
+      <a href="javascript:;" @click="goBack">
+        <i class="iconfont icon-fanhui" style="color:#00be88;font-weight:600;"></i>
+      </a>
+      <h1>发现</h1>
+    </header>
+    <mt-search cancel-text="取消" placeholder="按关键词搜索一下"></mt-search>
     <div class="banner">
       <mt-swipe :auto="2000">
         <mt-swipe-item>
@@ -27,7 +33,6 @@
           :key="item.name"
           class="distabLi"
           @click="changeTab(item.name)"
-          
         >
           <a
             href="javasctipt:;"
@@ -64,7 +69,7 @@ export default {
         }
       ],
       actname: "",
-      navfix:""
+      navfix: ""
     };
   },
   methods: {
@@ -74,21 +79,27 @@ export default {
     },
     handlescroll(e) {
       let eh = e.srcElement.scrollTop;
-      if(eh>=130){
-        this.navfix = 'addfixtop'
+      if (eh >= 130) {
+        this.navfix = "addfixtop";
       }
-      if(eh<130){
-        this.navfix = ""
+      if (eh < 130) {
+        this.navfix = "";
       }
+    },
+    goBack() {
+      console.log("go back");
+      history.back();
     }
   },
-  created() {
-    if (this.$route.name == "Discover") {
-      this.actname = "New";
-      this.$router.push({ name: "New" });
-    } else {
-      this.actname = this.$route.name;
-    }
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (vm.$route.name == "Discover") {
+        vm.actname = "New";
+        vm.$router.push({ name: "New" });
+      } else {
+        vm.actname = vm.$route.name;
+      }
+    });
   }
 };
 </script>
@@ -98,11 +109,11 @@ export default {
   color: #00be88;
   border-bottom: 0.125rem solid rgb(0, 190, 136);
 }
-.addfixtop{
+.addfixtop {
   position: fixed;
-  top:2.625rem;
-  left:0;
-  right:0;
+  top: 2.625rem;
+  left: 0;
+  right: 0;
 }
 @import "./css/discover.scss";
 </style>

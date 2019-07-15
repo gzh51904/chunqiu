@@ -4,7 +4,9 @@
       <a href="javascript:;" @click="goBack">
         <i class="iconfont icon-fanhui" style="color:#00be88;font-weight:600;"></i>
       </a>
-      <h1>账号登录</h1>
+      <h1>
+        <a href="javascript:;" @click="gotoReg">账号登录</a>
+      </h1>
     </header>
     <div class="logbody">
       <div class="logtx">
@@ -50,6 +52,8 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
+import { Toast } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   data() {
     return {
@@ -72,10 +76,95 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["changeshowbottom", "changeshowtop"]),
+    ...mapMutations(["changedaohang"]),
 
     goBack() {
+      // this.$router.push({ name: "Mine" });
       history.back();
+      console.log("退回mine");
+    },
+    gotoReg() {
+      this.$router.push({ name: "Reg" });
+    },
+    getcode() {
+      if (!this.codebtn) return;
+      if (this.phoneNum == "") {
+        alert("请输入手机号");
+        return false;
+      }
+      if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.phoneNum)) {
+        alert("请输入正确的手机号");
+        return false;
+      }
+      this.$axios
+        .post("http://localhost:2019/getcode", {
+          params: { phoneNum: this.phoneNum }
+        })
+        .then(res => {
+          if (res.status == 200) {
+            this.code = res.data.data;
+            console.log("this.code",this.code);
+            this.codebtn = false;
+            this.content = this.codetime + "后重新获取";
+            let timer = window.setInterval(() => {
+              this.codetime--;
+              this.content = this.codetime + "s后重新发送";
+              if (this.codetime < 0) {
+                window.clearInterval(timer);
+                this.content = "重新发送验证码";
+                this.codetime = 60;
+                this.codebtn = true;
+              }
+            }, 1000);
+          } else {
+            this.canlog = false;
+            alert("发送失败");
+          }
+          console.log("返回的数据：", res.data);
+        });
+    },
+    login() {
+      console.log("登录成功", this.canlog);
+      if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.phoneNum)) {
+        alert("请输入正确的手机号");
+        this.canlog = false;
+        return false;
+      }
+      if (this.password == "") {
+        alert("请输入验证码");
+        this.canlog = false;
+        return false;
+      }
+      if (this.password == this.code) {
+        this.$axios
+          .post("http://localhost:2019/log", {
+            params: {
+              password: this.password,
+              phoneNum: this.phoneNum,
+              ignore:true
+            }
+          })
+          .then(res => {
+            console.log("返回的数据：", res.data);
+            if (res.data.status == 200 || res.data.status == 101) {
+              // Toast('登录成功,正在跳转');
+              Indicator.open("登陆成功，请稍后...");
+              console.log(res.data.data);
+              window.localStorage.setItem('tk',res.data.data.tk);
+              window.localStorage.setItem('username',this.phoneNum);
+              setTimeout(() => {
+                this.$router.push("/mine");
+                Indicator.close();
+              }, 1000);
+            } else {
+              Toast("登录失败，请稍后再试");
+              return false;
+            }
+          });
+      }else{
+        Toast("验证码错误");
+        return false;
+      }
     },
     passwordInput() {
       if (this.password == "" || this.phoneNum == "") {
@@ -95,89 +184,18 @@ export default {
       } else {
         this.cansend = true;
       }
-    },
-    login() {
-      console.log("登录成功", this.canlog);
-      if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.phoneNum)) {
-        alert("请输入正确的手机号");
-        this.canlog = false;
-        return false;
-      }
-      if(password == ""){
-        alert("请输入验证码");
-        this.canlog = false;
-        return false;
-      }
-      if ((this.password = this.code)) {
-        this.$axios
-          .post("http://localhost:1112/log/", {
-            params: {
-              password: this.password,
-              phoneNum: this.phoneNum
-            }
-          })
-          .then(res => {
-            console.log("返回的数据：", res.data);
-            if(res.data){
-              this.$router.push({path:'/mine'});
-            }
-          });
-      }
-    },
-    getcode() {
-      if (!this.codebtn) return;
-      if (this.phoneNum == "") {
-        alert("请输入手机号");
-        return false;
-      }
-      if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.phoneNum)) {
-        alert("请输入正确的手机号");
-        return false;
-      }
-      this.$axios
-        .post("http://localhost:1112/", {
-          params: { phoneNum: this.phoneNum }
-        })
-        .then(res => {
-          if (res.status == 200) {
-            this.code = res.data.data;
-            this.codebtn = false;
-            this.content = this.codetime + "后重新获取";
-            let timer = window.setInterval(() => {
-              this.codetime--;
-              this.content = this.codetime + "s后重新发送";
-              if (this.codetime < 0) {
-                window.clearInterval(timer);
-                this.content = "重新发送验证码";
-                this.codetime = 60;
-                this.codebtn = true;
-              }
-            }, 1000);
-          } else {
-            this.canlog = false;
-            alert("发送失败");
-          }
-          console.log("返回的数据：", res.data);
-        });
     }
   },
-  created() {
-    this.changeshowbottom(false);
-    this.changeshowtop(false);
-    console.log("Log is created");
+  beforeRouteEnter(to, from, next) {
+    console.log("进入log");
+    next(vm => {
+      vm.changedaohang(false);
+    });
   },
-  destroyed() {
-    this.changeshowbottom(true);
-    this.changeshowtop(true);
-    console.log("Log is destroyed");
+  beforeRouteLeave(to, from, next){
+    this.changedaohang(true);
+    next();
   }
-  // beforeRouteEnter(to, from, next) {
-  //   next(vm => {
-  //     vm.changeshowtop(false);
-  //     vm.changeshowbottom(false);
-  //     console.log("beforeRouteEnter");
-  //   });
-  // }
 };
 </script>
 <style lang='scss' scoped>

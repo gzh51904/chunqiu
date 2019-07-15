@@ -1,7 +1,11 @@
 <template>
   <div id="minebox">
     <div class="mineTop">
-      <p>
+      <p v-if="islog">
+        你好，{{username}}
+        <a href="javasript:;" @click="gotolog">切换账号</a>
+      </p>
+      <p v-else>
         登录春秋，即刻启程
         <a href="javasript:;" @click="gotolog">登录/注册</a>
       </p>
@@ -90,35 +94,45 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+// import { mapMutations } from "vuex";
 import orderlist from "./data/mine.vue";
 export default {
   data() {
     return {
-      toplist:orderlist.toplist,
-      midlist:orderlist.midlist,
-      bottomlist:orderlist.bottomlist,
+      toplist: orderlist.toplist,
+      midlist: orderlist.midlist,
+      bottomlist: orderlist.bottomlist,
+      islog: false,
+      username:''
     };
   },
   methods: {
-    ...mapMutations(["changeshowtop"]),
-    
-    gotolog(){
-        this.$router.push({name:'Log'})
+    // ...mapMutations(["changeshowtop", "changeshowbottom"]),
+
+    gotolog() {
+      this.$router.push({ name: "Log" });
     }
   },
-  beforeRouteLeave(to,from,next){
-    if(to.name=="Home" || to.name=="Mine"){
-      this.changeshowtop(false);
-    }else{
-      this.changeshowtop(true);
-    }
-    next();
-  },
-  beforeRouteEnter(to,from,next){
-    next(vm=>{
-      vm.changeshowtop(false);
-    })
+  // beforeRouteLeave(to, from, next) {
+  //   if (to.name == "Home" || to.name == "Mine") {
+  //     this.changeshowtop(false);
+  //   } else {
+  //     this.changeshowtop(true);
+  //   }
+  //   next();
+  // },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      // vm.changeshowtop(false);
+      // vm.changeshowbottom(true);
+      let username = localStorage.getItem('username');
+      if(username){
+        vm.username = username;
+        vm.islog = true;
+      }else{
+        vm.islog = false;
+      }
+    });
   }
 };
 </script>
