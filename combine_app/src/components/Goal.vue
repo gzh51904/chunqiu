@@ -135,12 +135,14 @@ export default {
 
     if (this.$store.state.axiang == "") {
       // console.log("gdx",window.location.hash.length);
-	  window.location.hash = "#/goal/hot";
-	  localStorage.axiang = "#/goal/hot";
+    window.location.hash = "#/goal/hot";
+      this.active = "Hot";
+    
+	  // localStorage.axiang = "#/goal/hot";
       // console.log(666666)
     } else {
 	  window.location.hash = this.$store.state.axiang;
-	   localStorage.axiang = this.$store.state.axiang;;
+	  //  localStorage.axiang = this.$store.state.axiang;;
     }
   },
   methods: {

@@ -207,6 +207,9 @@ export default {
   },
   destroyed() {
     window.removeEventListener("scroll", this.watchScroll);
+  },
+  activated() {
+    this.$store.state.showdaohang = true;
   }
 };
 </script>
@@ -442,6 +445,7 @@ a {
 .goodlist {
   > ul {
     padding: 0 0.625rem 0 0.625rem !important;
+    margin-top:2%;
     > li {
       border-bottom: 0.0625rem solid #ccc;
       padding-bottom: 0.3125rem;

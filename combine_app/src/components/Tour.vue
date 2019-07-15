@@ -174,15 +174,9 @@ export default {
       showhide: ""
     };
   },
-  async created() {
-    let id = this.$route.query.goodid;
-    await this.$axios
-      .get("http://10.3.141.56:2019/goodlist/" + id)
-      .then(res => {
-        let data = res.data;
-        this.msg = data[0];
-        this.imgurl = this.msg.imgurl;
-      });
+  created() {
+    this.render();
+    this.$store.state.showdaohang = false;
   },
   methods: {
     goto() {
@@ -196,7 +190,6 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      console.log(scrollTop2);
       if (scrollTop2 > 200) {
         this.navFixed = "yidong";
         this.showhide = "showhide";
@@ -204,7 +197,20 @@ export default {
         this.navFixed = "guding";
         this.showhide = "hideshow";
       }
+    },
+    async render() {
+      let id = this.$route.query.goodid;
+      await this.$axios
+        .get("http://10.3.141.56:2019/goodlist/" + id)
+        .then(res => {
+          let data = res.data;
+          this.msg = data[0];
+          this.imgurl = this.msg.imgurl;
+        });
     }
+  },
+  activated() {
+    this.render();
   },
   mounted() {
     //事件监听滚动条

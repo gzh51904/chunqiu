@@ -11,15 +11,14 @@
       <router-view />
     </keep-alive>
 
-    <el-footer>
+    <el-footer v-if="$store.state.showdaohang">
       <!-- v-model="selected" -->
       <mt-tabbar fixed v-model="selected">
         <mt-tab-item
-          :id="item.name"
+          :id="item.path.slice(1)"
           v-for="item in pages"
           :key="item.path"
           @click.native="goto(item.path,item.name)"
-          :class="{actname:item.path.slice(1)==$store.state.active}"
         >
           <!-- <router-link :to="item.path" tag="span"> -->
           <span class="navBottom">
@@ -102,7 +101,9 @@ export default {
   methods: {
     goto(path, name) {
       this.$router.push(path);
-      this.$store.state.active = path.slice(1);
+      // this.$store.state.active = path.slice(1);
+      this.$store.state.active = /(\/[^\/]+)/gi.exec(path)[0].slice(1);
+      console.log(this.selected);
     },
     goBack() {
       // console.log("go back");
@@ -122,19 +123,21 @@ export default {
   created() {
     // 刷新保持高亮效果，刷新后保持当前的高亮的页面
     let hash = window.location.hash.slice(2);
+
     //
-    this.$store.state.active = hash.substr(1);
+    // this.$store.state.active = hash.substr(1);
     // console.log("7777", hash);
     if (hash != "") {
       if (hash.slice(0, 4) == 4) {
         console.log("qqqqqqq", hash);
-        this.active = "goal";
+        this.selected = "goal";
       } else {
         hash = hash.replace(hash[0], hash[0].toUpperCase());
-        this.selected = hash;
+        this.selected = /(\/[^\/]+)/gi.exec(window.location.hash)[0].slice(1);
+        console.log('this.selected:',this.selected);
       }
     } else {
-      this.active = "home";
+      this.selected = "home"; ////!!!!!!!
     }
   }
 };
@@ -142,10 +145,10 @@ export default {
 
 <style scoped lang='scss'>
 @import "./components/css/app.scss";
-.actname {
-  // color: #58bc58 !important;
-  font-weight: bold;
-}
+// .actname {
+//   // color: #58bc58 !important;
+//   // font-weight: bold;
+// }
 .footer {
   z-index: 999;
   width: 100%;
