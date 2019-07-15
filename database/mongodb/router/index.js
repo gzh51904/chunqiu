@@ -7,6 +7,7 @@ const upload = require('./upload');
 const users = require('./users');
 const reg = require('./reg');
 const adm = require('./adm');
+const log = require('./log');
 
 const token = require('../utils/token')
 const {formatdata} = require('../utils')
@@ -68,6 +69,7 @@ Router.use('/upload',upload);
 Router.use('/users',users);
 Router.use('/reg',reg);
 Router.use('/adm',adm);
+Router.use('/log',log);
 
 
 

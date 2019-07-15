@@ -31,5 +31,17 @@ Router.delete('/',async(req,res)=>{
     }
     res.send(result);
 })
+//判断是否已经注册
+Router.get('/',async(res,req)=>{
+    let {phoneNum} = req.body.params;
+    let result;
+    try{
+        result = await db.searchone(colname,phoneNum);
+        result = formatdata({});
+    }catch(err){
+        result = formatdata({status:300,msg:'该手机号已被注册'})
+    }
+    res.send(result);
+})
 
 module.exports= Router;
