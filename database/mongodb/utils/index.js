@@ -1,3 +1,4 @@
+const token = require('./token');
 function formatdata({data=[],msg='success',status=200}={}){
     if(status== 400){
         msg= 'fail';
@@ -10,5 +11,6 @@ function formatdata({data=[],msg='success',status=200}={}){
 }
 
 module.exports = {
-    formatdata
+    formatdata,
+    token
 }
