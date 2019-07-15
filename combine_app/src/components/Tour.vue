@@ -1,7 +1,7 @@
 <template>
   <div class="tour">
     <div :class="navFixed" class="touheader">
-      <a class="tou_fl" href="javascript:void(0);">
+      <a @click="goback" class="tou_fl" href="javascript:void(0);">
         <i class="iconfont icon-jiantou3"></i>
       </a>
       <h1 :class="showhide">产品详情</h1>
@@ -188,6 +188,9 @@ export default {
     goto() {
       this.$router.push("home");
     },
+    goback() {
+      history.back();
+    },
     watchScroll2() {
       var scrollTop2 =
         window.pageYOffset ||
@@ -259,17 +262,17 @@ export default {
     }
     .tou_fr {
       float: right;
-        // padding-right:5px;
+      // padding-right:5px;
       > a {
         color: green;
         font-size: 1.5rem;
         line-height: 166%;
       }
-      .shouye{
-        margin-right:.625rem;
+      .shouye {
+        margin-right: 0.625rem;
       }
-      .fenxiang{
-        margin-right:.625rem;
+      .fenxiang {
+        margin-right: 0.625rem;
       }
     }
   }

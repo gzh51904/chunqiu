@@ -462,7 +462,7 @@ a {
           margin-top: 1%;
           min-height: 1.25rem;
           max-height: 1.875rem;
-          line-height: 0.9375rem;
+          line-height: 0.95rem;
           overflow: hidden;
           color: #333;
           font-size: 0.875rem;

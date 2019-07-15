@@ -19,6 +19,7 @@
           v-for="item in pages"
           :key="item.path"
           @click.native="goto(item.path,item.name)"
+          :class="{actname:item.path.slice(1)==$store.state.active}"
         >
           <!-- <router-link :to="item.path" tag="span"> -->
           <span class="navBottom">
@@ -100,10 +101,8 @@ export default {
   },
   methods: {
     goto(path, name) {
-      console.log("sdsdsdd",path)
-        this.$router.push(path);
-
-      this.active = name;
+      this.$router.push(path);
+      this.$store.state.active = path.slice(1);
     },
     goBack() {
       // console.log("go back");
@@ -123,6 +122,8 @@ export default {
   created() {
     // 刷新保持高亮效果，刷新后保持当前的高亮的页面
     let hash = window.location.hash.slice(2);
+    //
+    this.$store.state.active = hash.substr(1);
     // console.log("7777", hash);
     if (hash != "") {
       if (hash.slice(0, 4) == 4) {
@@ -142,7 +143,7 @@ export default {
 <style scoped lang='scss'>
 @import "./components/css/app.scss";
 .actname {
-  color: #58bc58 !important;
+  // color: #58bc58 !important;
   font-weight: bold;
 }
 .footer {
@@ -180,7 +181,7 @@ export default {
 
       .navWord {
         margin: 5px 0 0 0;
-        font-size:10px;
+        font-size: 10px;
       }
     }
   }

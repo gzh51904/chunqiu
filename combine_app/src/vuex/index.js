@@ -7,7 +7,8 @@ const store = new Vuex.Store({
         showdaohang:true,
         showtop:true,
         showbottom:true,
-        axiang: localStorage.axiang? localStorage.axiang:''
+        axiang: localStorage.axiang? localStorage.axiang:'',
+        active:'home'
     },
     mutations:{
         changedaohang(state,val){
