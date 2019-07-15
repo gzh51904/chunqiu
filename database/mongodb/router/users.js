@@ -3,7 +3,7 @@ const Router =express.Router();
 const db = require('../db/index');
 const {formatdata} = require('../utils')
 
-const colname = 'users';
+const colname = 'user';
 
 //查询、获取商品
 Router.get('/',async (req,res)=>{

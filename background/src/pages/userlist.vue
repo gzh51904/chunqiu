@@ -32,8 +32,8 @@ export default {
                     align: 'center'
                 },
                 {
-                    title:'用户名',
-                    key: 'username'
+                    title:'用户名/手机号',
+                    key: 'phoneNum'
                 },
                 {
                     title: '密码',
@@ -118,7 +118,7 @@ export default {
                 content: '<div>用户信息比较重要，删除后用户信息将被销毁，且无法登录APP</div>',
                 onOk:  () => {
                    
-                         this.$axios.delete('/reg',{params:{username,password}}
+                         this.$axios.delete('/reg',{params:{phoneNum,password}}
                         ) .then( (response) =>{
                         // console.log("删除成功")
                          this.$Message.info("删除成功" )

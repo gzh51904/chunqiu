@@ -34,7 +34,7 @@
                   </Breadcrumb>
                
                 </div>
-                  <Button :size="buttonSize" type="warning" class="tuichu" @click="out">退出</Button>
+                  <Button  type="warning" class="tuichu" @click="out">退出</Button>
               </Header>
               <Content :style="{padding: '30px 16px 0px 16px'}">
                 <Card>

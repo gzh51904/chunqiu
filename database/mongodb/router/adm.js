@@ -8,6 +8,7 @@ const colname = 'Administrator';
 
 //查询登录后台
 Router.get('/',async (req,res)=>{
+    console.log(req.query)
     let result = await db.search(colname,req.query); 
 
     if(result.length == 0){

@@ -1,7 +1,7 @@
 <template>
   <i-form :label-width="80">
         <Form-item label="用户名">
-            <i-input v-model="userform.username" ref="blur" placeholder="请输入"></i-input>
+            <i-input v-model="userform.phoneNum" ref="blur" placeholder="请输入"></i-input>
         </Form-item>
         <Form-item label="密码">
             <i-input v-model="userform.password" ref="blur" placeholder="请输入"></i-input>
@@ -25,7 +25,7 @@ export default {
     data(){
         return{
             userform:{
-                username:'',
+                phoneNum:'',
                 password: '',
                 sex:'',
             },
@@ -45,8 +45,10 @@ export default {
              }
              else{
                 let arr = this.userform;
-                this.$axios.post('/reg',{  
-                        ...arr  ,address:new Date()                  
+                this.$axios.post('/reg',{  params:{
+                     ...arr  ,address:new Date()  
+                }
+                                       
                 })  
                 .then( (response) =>{
                     this.userform = this.emptyform;

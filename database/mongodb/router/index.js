@@ -41,13 +41,13 @@ Router.use((req,res,next)=>{
     else{
         // let tank = req.headers.token ? req.headers.token:"";
         // 判断是否为无需token请求
-        // if(req.query.ignore ||  req.body.ignore){
-            // req.query.ignore ? delete req.query['ignore'] : delete req.body['ignore']
+        if(req.query.ignore ||  req.body.ignore){
+            req.query.ignore ? delete req.query['ignore'] : delete req.body['ignore']
             next();
         }
-        // else{
-        //     next();
-        // }
+        else{
+            next();
+        }
     //     else if(token.jiemi(tank)){
     //         console.log('解密成功')
     //         next();
@@ -57,7 +57,7 @@ Router.use((req,res,next)=>{
     //     console.log('过期或失败？')
     //     res.send(formatdata({status:401,msg:'unauthorized'}))
     //    }
-    // }
+    }
 })
 
 
