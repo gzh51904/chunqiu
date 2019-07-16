@@ -201,7 +201,7 @@ export default {
     async render() {
       let id = this.$route.query.goodid;
       await this.$axios
-        .get("http://10.3.141.56:2019/goodlist/" + id)
+        .get("http://47.94.157.240:2019/goodlist/" + id)
         .then(res => {
           let data = res.data;
           this.msg = data[0];

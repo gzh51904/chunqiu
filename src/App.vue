@@ -6,7 +6,7 @@
       </a>
       <h1>发现</h1>
     </header>-->
-    <div class="main">
+    <div class="guoyang">
       <keep-alive>
         <router-view />
       </keep-alive>

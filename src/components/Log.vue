@@ -97,7 +97,7 @@ export default {
         return false;
       }
       this.$axios
-        .post("http://localhost:2019/getcode", {
+        .post("http://47.94.157.240:2019/getcode", {
           params: { phoneNum: this.phoneNum }
         })
         .then(res => {
@@ -137,7 +137,7 @@ export default {
       }
       if (this.password == this.code) {
         this.$axios
-          .post("http://localhost:2019/log", {
+          .post("http://47.94.157.240:2019/log", {
             params: {
               password: this.password,
               phoneNum: this.phoneNum,

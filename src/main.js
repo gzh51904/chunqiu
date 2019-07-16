@@ -19,7 +19,7 @@ Vue.use(ElementUI)
 import axios from 'axios';
 Vue.prototype.$axios = axios;
 // 配置axios请求的基础路径
-axios.defaults.baseURL = 'http://10.3.141.56:2019';
+axios.defaults.baseURL = 'http://47.94.157.240:2019';
 
 //跳转回顶部
 router.beforeEach((to, from, next) => {

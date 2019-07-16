@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="aji">
     <header>
       <a @click="goto('home')" href="javascript:void(0);">
         <i class="iconfont icon-jiantou3"></i>
@@ -71,7 +71,7 @@ a {
   color: #666;
   text-decoration: none;
 }
-.main {
+.aji {
   padding: 0 2%;
   height: 400px;
   border-bottom: 1px solid #ccc;

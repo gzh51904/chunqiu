@@ -5,11 +5,11 @@
     
     上线地址 ：
     
-    春秋旅游app ：
+    春秋旅游app ：http://47.94.157.240:1500
     
-    后台管理系统 ：
+    后台管理系统 ：http://47.94.157.240:1501
     
-    github仓库地址 git@github.com:gzh51904/chunqiu.git
+    github仓库地址 ：git@github.com:gzh51904/chunqiu.git
 
 
 

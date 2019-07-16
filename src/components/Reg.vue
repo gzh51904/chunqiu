@@ -141,14 +141,14 @@ export default {
       if (this.canlog) {
         // console.log("可以登录");
         this.$axios
-          .get("http://localhost:2019/reg", {
+          .get("http://47.94.157.240:2019/reg", {
             params: { phoneNum: this.phoneNum }
           })
           .then(res => {
             // console.log("第一次请求的res",res.data.status);
             if(res.data.status == 200){
               // console.log('号码可用');
-              this.$axios.post("http://localhost:2019/reg",{
+              this.$axios.post("http://47.94.157.240t:2019/reg",{
                 params:{phoneNum:this.phoneNum,password:this.password}
               }).then(res=>{
                 Toast('登录成功,正在跳转');
